@@ -8,11 +8,38 @@
             "autoAttachChildProcesses": false,
             "type": "pwa-node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Test",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}/test.ts",
+            "runtimeArgs": [
+                "--expose-gc",
+                "--nolazy",
+                "-r",
+                "ts-node/register"
+            ],
+            "sourceMaps": true,
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/**",
+                "!**/node_modules/**"
+            ],
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ],
+            "env": {
+                "DEBUG": "/scrypted/*",
+            }
+        },
+        {
+            "autoAttachChildProcesses": false,
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Test Reboot",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/test-reboot.ts",
             "runtimeArgs": [
                 "--expose-gc",
                 "--nolazy",

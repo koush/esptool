@@ -148,6 +148,8 @@ export async function readChunk(readable: Readable, minLength?: number, maxLengt
     const cleanup = () => {
       readable.removeListener('data', data);
       readable.removeListener('end', end);
+      readable.removeListener('error', end);
+      readable.removeListener('close', end);
     }
     const end = () => {
       cleanup();
