@@ -685,6 +685,13 @@ export class EspLoader {
     await this.flashBegin(0, 0);
     const buffer = pack("<I", reboot ? 0 : 1);
     await this.checkCommand(ESP_FLASH_END, buffer);
+
+    this.serialPort.set({
+      dtr: false,
+    });
+    this.serialPort.set({
+      dtr: true,
+    });
   }
 
   /**

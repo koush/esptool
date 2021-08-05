@@ -81,8 +81,6 @@ async function main() {
             options.logger.log("successfully written device partitions");
             options.logger.log("flashing succeeded");
             await loader.flashFinish(true);
-            await loader.flashFinish(true);
-            await loader.flashFinish(true);
             options.logger.log("reboot succeeded");
         } finally {
             await loader.disconnect();
