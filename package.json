@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "@types/node": "^14.17.6",
+    "electron": "^14.0.0-beta.17",
+    "electron-nightly": "^16.0.0-nightly.20210730",
+    "serialport": "^9.2.0",
+    "ts-node": "^10.1.0"
+  },
+  "devDependencies": {
+    "@types/serialport": "^8.0.2"
+  },
+  "name": "node-esptool",
+  "version": "1.0.0",
+  "main": "test.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
