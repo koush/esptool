@@ -50,7 +50,7 @@ const ROM_INVALID_RECV_MSG = 0x05;
 const USB_RAM_BLOCK = 0x800;
 
 // Timeouts
-const DEFAULT_TIMEOUT = 3000; // timeout for most flash operations
+const DEFAULT_TIMEOUT = 5000; // timeout for most flash operations
 const CHIP_ERASE_TIMEOUT = 300000; // timeout for full chip erase
 const MAX_TIMEOUT = CHIP_ERASE_TIMEOUT * 2; // longest any command can run
 const SYNC_TIMEOUT = 100; // timeout for syncing with bootloader
@@ -110,19 +110,13 @@ export class EspLoader {
 
   private async writeToStream(msg: Uint8Array) {
     await new Promise((resolve, reject) => {
-      this.serialPort.write(Buffer.from(msg), e => {
+      const wr = this.serialPort.write(Buffer.from(msg), e => {
         if (e) {
           return reject(e);
         }
         resolve(null);
       });
     });
-    // const writer = this.serialPort.writable.getWriter();
-    // try {
-    //   await writer.write(msg);
-    // } finally {
-    //   writer.releaseLock();
-    // }
   }
 
   /**
@@ -142,8 +136,6 @@ export class EspLoader {
       dtr: true,
       rts: false,
     });
-    // this.serialPort.setSignals({ dataTerminalReady: false, requestToSend: true });
-    // this.serialPort.setSignals({ dataTerminalReady: true, requestToSend: false });
     await new Promise((resolve) => setTimeout(resolve, rebootWaitMs));
 
     this._connect();
@@ -507,16 +499,7 @@ export class EspLoader {
     const buffer = pack("<II", baud, this.isStub ? prevBaud : 0);
     await this.checkCommand(ESP_CHANGE_BAUDRATE, buffer);
 
-    // Close the read loop and port
-    await this.disconnect();
-    await new Promise((resolve, reject) => this.serialPort.close(e => {
-      if (e) {
-        return reject(e);
-      }
-      resolve(null);
-    }));
-
-    await new Promise((resolve, reject) => this.serialPort = new SerialPort(this.serialPort.path, {
+    await new Promise((resolve, reject) => this.serialPort.update({
       baudRate: baud,
     }, e => {
       if (e) {
@@ -524,8 +507,7 @@ export class EspLoader {
       }
       resolve(null);
     }));
-    await sleep(50);
-    this._connect();
+    await sleep(2000);
 
     // Baud rate was changed
     this.logger.log("Changed baud rate to", baud);
